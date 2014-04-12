@@ -18,7 +18,7 @@
 
 (defn register [& [id]]
   (layout/render
-    "registration.html"
+    "auth/registration.html"
     {:id id
      :id-error (vali/on-error :id first)
      :pass-error (vali/on-error :pass first)
@@ -38,7 +38,7 @@
 
 (defn profile []
   (layout/render
-    "profile.html"
+    "auth/profile.html"
     {:user (db/get-user (session/get :user-id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]

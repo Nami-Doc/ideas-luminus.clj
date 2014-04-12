@@ -7,6 +7,8 @@
 
 (defentity users)
 
+(defentity ideas)
+
 (defn create-user [user]
   (insert users
           (values user)))
@@ -22,3 +24,6 @@
   (first (select users
                  (where {:id id})
                  (limit 1))))
+
+(defn list-ideas []
+  (select ideas))

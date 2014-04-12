@@ -5,10 +5,10 @@
 
 (defn home-page []
   (layout/render
-    "home.html" {:content (util/md->html "/md/docs.md")}))
+    "home/index.html" {:content (util/md->html "/md/home.md")}))
 
 (defn about-page []
-  (layout/render "about.html"))
+  (layout/render "home/about.html"))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
