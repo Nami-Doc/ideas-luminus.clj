@@ -1,10 +1,10 @@
 CREATE TABLE categories (
-  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id SERIAL,
   name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE ideas (
-  id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id SERIAL,
   name varchar(255),
   description TEXT NOT NULL
 );
