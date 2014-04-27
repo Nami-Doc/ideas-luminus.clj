@@ -9,7 +9,9 @@
 
 (defn valid? [id pass pass1]
   (vali/rule (vali/has-value? id)
-             [:id "user ID is required"])
+             [:id "you must specify a username"])
+  (vali/rule (not (db/get-user id))
+              [:id "this username is already taken"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)

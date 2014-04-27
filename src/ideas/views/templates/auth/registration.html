@@ -4,7 +4,7 @@
 {% block content %}
 <form action="{{servlet-context}}/register" method="POST">
   <div class="form-group col-lg-3">
-    <label for="id">user id</label>
+    <label for="id">username</label>
     {% if id-error %}
       <div class="alert alert-danger">{{id-error}}</div>
     {% endif %}

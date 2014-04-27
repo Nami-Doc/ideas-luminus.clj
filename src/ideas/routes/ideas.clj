@@ -1,6 +1,7 @@
 (ns ideas.routes.ideas
   (:use compojure.core)
   (:require [ideas.views.layout :as layout]
+            [noir.session :as session]
             [ideas.util :as util]
             [ideas.models.db :as db]))
 
@@ -26,9 +27,12 @@
     (empty? description)
     (add-page name description "The idea must be described !")
 
+    (nil? (session/get :user-id))
+    (add-page name description "You are not logged in")
+
     :else
     (do
-      (db/save-idea name description)
+      (db/create-idea name description)
       (list-page))))
 
 (defroutes crud-routes

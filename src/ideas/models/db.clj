@@ -34,3 +34,7 @@
   (first (select ideas
                  (where {:id id})
                  (limit 1))))
+
+(defn create-idea [idea]
+  (insert ideas
+          (values idea)))
