@@ -32,12 +32,13 @@
 
     :else
     (do
-      (db/create-idea name description)
+      (db/create-idea {:name name :description description})
       (list-page))))
 
 (defroutes crud-routes
   ;; @TODO list-page should probably have a :category-id parameter
   (GET "/" [] (list-page))
+  (GET "/add" [] (add-page))
   (GET "/:id" [id] (show-page))
   (POST "/" [name description] (save-page name description)))
 

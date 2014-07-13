@@ -7,4 +7,9 @@
 	<li><a href="/idea/{{idea.id}}">{{idea.name}}</a></li>
 	{% endfor %}
 </ul>
+
+{% if user-id %}
+    <br/>
+    <a href="/ideas/add">Add an Idea</a>
+{% endif %}
 {% endblock %}
