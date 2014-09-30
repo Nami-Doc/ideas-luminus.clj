@@ -12,17 +12,22 @@
   (insert users
           (values user)))
 
-(defn update-user [id first-name last-name email]
+(defn update-user [first-name last-name email]
   (update users
   (set-fields {:first_name first-name
                :last_name last-name
                :email email})
   (where {:id id})))
 
-(defn get-user [id]
-  (first (select users
-                 (where {:id id})
-                 (limit 1))))
+(defmacro find-getter [table field & [getter-name]]
+  (let [getter-name (if (nil? getter-name) (str "find-" table "-by-" field) append-name)]
+   `(defn ~(symbol getter-name) [~field]
+     (first (select ~table
+             (where {:~field field})
+             (limit 1))))
+(find-getter users id 'find-user)
+(find-getter users username)
+(find-getter users email)
 
 ;; ideas
 (defentity ideas)

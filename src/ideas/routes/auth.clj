@@ -7,11 +7,14 @@
             [noir.util.crypt :as crypt]
             [ideas.models.db :as db]))
 
-(defn valid? [id pass pass1]
-  (vali/rule (vali/has-value? id)
-             [:id "you must specify a username"])
-  (vali/rule (not (db/get-user id))
-              [:id "this username is already taken"])
+(defn valid? [username email pass pass1]
+  (vali/rule (vali/has-value? username)
+             [:username "you must specify a username"])
+  (vali/rule (not (db/get-user username))
+             [:username "this username is already taken"])
+  ;TODO
+  ;(vali/rule (not (db/get-user-by-email email))
+  ;           [:email "this email is already taken"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
@@ -26,11 +29,11 @@
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
-(defn handle-registration [id pass pass1]
-  (if (valid? id pass pass1)
+(defn handle-registration [username email pass pass1]
+  (if (valid? username email pass pass1)
     (try
       (do
-        (db/create-user {:id id :pass (crypt/encrypt pass)})
+        (db/create-user {:username username :email email :pass (crypt/encrypt pass)})
         (session/put! :user-id id)
         (resp/redirect "/"))
       (catch Exception ex
@@ -61,15 +64,15 @@
   (GET "/register" []
        (register))
 
-  (POST "/register" [id pass pass1]
-        (handle-registration id pass pass1))
+  (POST "/register" [username email pass pass1]
+        (handle-registration username email pass pass1))
 
   (GET "/profile" [] (profile))
   
   (POST "/update-profile" {params :params} (update-profile params))
   
-  (POST "/login" [id pass]
-        (handle-login id pass))
+  (POST "/login" [username pass]
+        (handle-login username pass))
 
   (GET "/logout" []
         (logout)))
