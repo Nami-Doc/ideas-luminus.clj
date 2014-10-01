@@ -12,9 +12,8 @@
              [:username "you must specify a username"])
   (vali/rule (not (db/get-user username))
              [:username "this username is already taken"])
-  ;TODO
-  ;(vali/rule (not (db/get-user-by-email email))
-  ;           [:email "this email is already taken"])
+  (vali/rule (not (db/get-user-by-email email))
+             [:email "this email is already taken"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
