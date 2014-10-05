@@ -23,7 +23,7 @@
   (let [getter-name (if (nil? getter-name) (str "find-" table "-by-" field) append-name)]
    `(defn ~(symbol getter-name) [~field]
      (first (select ~table
-             (where {:~field field})
+             (where {~(keyword field) field})
              (limit 1))))
 (find-getter users id 'find-user)
 (find-getter users username)
