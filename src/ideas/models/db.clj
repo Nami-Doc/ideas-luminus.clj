@@ -12,7 +12,7 @@
   (insert users
           (values user)))
 
-(defn update-user [first-name last-name email]
+(defn update-user [id first-name last-name email]
   (update users
   (set-fields {:first_name first-name
                :last_name last-name
@@ -20,12 +20,14 @@
   (where {:id id})))
 
 (defmacro find-getter [table field & [getter-name]]
-  (let [getter-name (if (nil? getter-name) (str "find-" table "-by-" field) append-name)]
+  (let [getter-name (if (nil? getter-name) (str "find-" (str table) "-by-" (str field)) getter-name)]
+    ; TODO currently, the getter will have the table name in plural as that's what's given to it... :(
    `(defn ~(symbol getter-name) [~field]
      (first (select ~table
-             (where {~(keyword field) field})
-             (limit 1))))
-(find-getter users id 'find-user)
+             (where {~(keyword field) ~field})
+             (limit 1))))))
+
+(find-getter users id "find-user")
 (find-getter users username)
 (find-getter users email)
 
