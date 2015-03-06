@@ -26,7 +26,11 @@
    [selmer "0.6.5"]
    [lib-noir "0.8.1"]
    [compojure "1.1.6"]
-   [postgresql/postgresql "9.1-901.jdbc4"]]
+   [postgresql/postgresql "9.1-901.jdbc4"]
+
+   ; and now, for project-specific deps...
+   [inflections "0.9.13"] ; used for DB stuff
+   ]
   :cljsbuild
   {:builds
    [{:source-paths ["src-cljs"],
@@ -51,12 +55,12 @@
    {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.2.2"]],
     :env {:dev true}}}
   :url
-  "http://example.com/FIXME"
+  "https://github.com/vendethiel/ideas-luminus.clj"
   :plugins
   [[lein-ring "0.8.10"]
    [lein-environ "0.4.0"]
    [ragtime/ragtime.lein "0.3.4"]
    [lein-cljsbuild "0.3.3"]]
   :description
-  "FIXME: write description"
+  "Tell us what are your ideas!"
   :min-lein-version "2.0.0")

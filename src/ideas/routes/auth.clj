@@ -10,9 +10,9 @@
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
              [:username "you must specify a username"])
-  (vali/rule (not (db/get-user username))
+  (vali/rule (not (db/find-user username))
              [:username "this username is already taken"])
-  (vali/rule (not (db/get-user-by-email email))
+  (vali/rule (not (db/find-user-by-email email))
              [:email "this email is already taken"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
@@ -32,25 +32,25 @@
   (if (valid? username email pass pass1)
     (try
       (do
-        (db/create-user {:username username :email email :pass (crypt/encrypt pass)})
-        (session/put! :user-id id)
-        (resp/redirect "/"))
+        (let [id (db/create-user {:username username :email email :pass (crypt/encrypt pass)})]
+          (session/put! :user-id id)
+          (resp/redirect "/")
+          (register id)))
       (catch Exception ex
         (vali/rule false [:id (.getMessage ex)])
-        (register)))
-    (register id)))
+        (register)))))
 
 (defn profile []
   (layout/render
     "auth/profile.html"
-    {:user (db/get-user (session/get :user-id))}))
+    {:user (db/find-user (session/get :user-id))}))
 
 (defn update-profile [{:keys [first-name last-name email]}]
   (db/update-user (session/get :user-id) first-name last-name email)
   (profile))
 
 (defn handle-login [id pass]
-  (let [user (db/get-user id)]
+  (let [user (db/find-user id)]
     (if (and user (crypt/compare pass (:pass user)))
       (session/put! :user-id id))
     (resp/redirect "/")))
@@ -67,9 +67,9 @@
         (handle-registration username email pass pass1))
 
   (GET "/profile" [] (profile))
-  
+
   (POST "/update-profile" {params :params} (update-profile params))
-  
+
   (POST "/login" [username pass]
         (handle-login username pass))
 
