@@ -74,7 +74,7 @@
   :plugins
   [[lein-ring "0.9.2"]
    [lein-environ "0.4.0"]
-   [ragtime/ragtime.lein "0.3.4"]
+   [ragtime/ragtime.lein "0.3.8"]
    [lein-cljsbuild "0.3.3"]]
 
   :description

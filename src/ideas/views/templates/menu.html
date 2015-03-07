@@ -22,18 +22,9 @@
         <ul class="nav navbar-nav">
             <li class="dropdown">
                 <form action="{{servlet-context}}/login" class="navbar-form" method="POST">
-                    <input class="span2"
-                           id="id"
-                           name="id"
-                           placeholder="username"
-                           style="margin-right: 5px"
-                           type="text"/>
-                    <input class="span2"
-                           id="pass"
-                           name="pass"
-                           placeholder="password"
-                           style="margin-right: 5px"
-                           type="password"/>
+                    {% csrf-token %}
+                    <input class="span2" id="username" name="username" placeholder="username" style="margin-right: 5px"/>
+                    <input class="span2" id="pass" name="pass" placeholder="password" style="margin-right: 5px" type="password"/>
                     <input class="btn" type="submit" value="Login"/>
                 </form>
             </li>

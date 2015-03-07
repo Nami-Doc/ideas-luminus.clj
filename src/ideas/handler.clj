@@ -10,7 +10,8 @@
             [ideas.routes.auth :refer [auth-routes]]
             [ideas.routes.cljs :refer [cljs-routes]]
             [ideas.routes.home :refer [home-routes]]
-            [ideas.routes.ideas :refer [ideas-routes]]))
+            [ideas.routes.ideas :refer [ideas-routes]]
+            [ring.util.anti-forgery :refer [anti-forgery-field]]))
 
 (defroutes
   app-routes
@@ -34,8 +35,9 @@
     [:shared-appender-config :rotor]
     {:path "ideas.log", :max-size (* 512 1024), :backlog 10})
 
+  (parser/add-tag! :csrf-token (fn [_ _] (anti-forgery-field)))
   (if (env :dev) (parser/cache-off!))
-  
+
   (timbre/info "ideas started successfully"))
 
 (defn destroy

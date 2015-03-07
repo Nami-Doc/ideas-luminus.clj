@@ -23,7 +23,7 @@
   (cond
     (empty? name)
     (add-page name description "The idea must be named !")
-    
+
     (empty? description)
     (add-page name description "The idea must be described !")
 
@@ -39,7 +39,7 @@
   ;; @TODO list-page should probably have a :category-id parameter
   (GET "/" [] (list-page))
   (GET "/add" [] (add-page))
-  (GET "/:id" [id] (show-page))
+  (GET "/:id" [id] (show-page id))
   (POST "/" [name description] (save-page name description)))
 
 (defroutes ideas-routes
