@@ -66,7 +66,7 @@
    {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.2.2"]],
     :env {:dev true}
     :ring {:auto-reload? true
-           :stracktrace-middleware prone.middleware/wrap-exceptions}}}
+           :stacktrace-middleware prone.middleware/wrap-exceptions}}}
 
   :url
   "https://github.com/vendethiel/ideas-luminus.clj"

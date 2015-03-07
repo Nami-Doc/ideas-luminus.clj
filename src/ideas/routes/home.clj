@@ -5,7 +5,6 @@
             [prone.debug :refer [debug]]))
 
 (defn home-page []
-  (debug)
   (layout/render
     "home/index.html" {:content (util/md->html "/md/home.md")}))
 
