@@ -1,8 +1,10 @@
 (ns ideas.main
-  (:require [ajax.core :refer [GET POST]] 
+  (:require [ajax.core :refer [GET POST]]
             [domina :refer [value by-id destroy-children! append!]]
             [domina.events :refer [listen!]]
-            [dommy.template :as template]))
+            [hipo.core :as hipo]
+            ;[dommy.core :refer-macros [sel sel1]]
+            ))
 
 (def base-request-params
   {:format :json
@@ -18,7 +20,7 @@
     (->> messages
          (map render-message)
          (into [:ul])
-         template/node
+         hipo/create
          (append! messages-div))))
 
 (defn add-message [_]

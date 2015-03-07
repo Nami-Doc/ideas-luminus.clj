@@ -1,9 +1,11 @@
 (ns ideas.routes.home
   (:use compojure.core)
   (:require [ideas.views.layout :as layout]
-            [ideas.util :as util]))
+            [ideas.util :as util]
+            [prone.debug :refer [debug]]))
 
 (defn home-page []
+  (debug)
   (layout/render
     "home/index.html" {:content (util/md->html "/md/home.md")}))
 

@@ -3,7 +3,7 @@
 (def db-spec
   {:subprotocol "postgresql"
    :subname "//localhost/ideas"
-   :user "postgres"
-   :password "root"})
+   :user "ideas_user"
+   :password "ideas-password"})
 
 

@@ -8,6 +8,6 @@ Usually, when you want to try a language, a framework, etc, you first need to th
 
 You need to think of a project that's suitable for that technology, with well-defined rules and a way go gauge the difficulty.
 
-### Where does **ideas** kicks in ?
+### Where does **ideas** kick in ?
 
 **ideas** is a database containing project ideas with proper specs, with a difficulty meter, triaged by tags and where you'll be able to see previous realisations ... Or even submit yours !
