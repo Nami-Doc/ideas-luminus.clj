@@ -3,16 +3,16 @@
     <div class="btn-group pull-right">
         <ul class="nav navbar-nav">
             <li>
-                <a href="{{servlet-context}}/ideas">List</a>
+                <a href="/ideas">List</a>
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-user"></i>{{user-id}} <b class="caret"></b>
+                    <i class="icon-user"></i>{{(user-id)}} <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{servlet-context}}/profile">Profile</a></li>
+                    <li><a href="/profile">Profile</a></li>
                     <li class="divider"></li>
-                    <li><a href="{{servlet-context}}/logout">Sign Out</a></li>
+                    <li><a href="/logout">Sign Out</a></li>
                 </ul>
             </li>
         </ul>
@@ -21,7 +21,7 @@
     <div class="btn-group pull-right">
         <ul class="nav navbar-nav">
             <li class="dropdown">
-                <form action="{{servlet-context}}/login" class="navbar-form" method="POST">
+                <form action="/login" class="navbar-form" method="POST">
                     {% csrf-token %}
                     <input class="span2" id="username" name="username" placeholder="username" style="margin-right: 5px"/>
                     <input class="span2" id="pass" name="pass" placeholder="password" style="margin-right: 5px" type="password"/>
@@ -29,7 +29,7 @@
                 </form>
             </li>
             <li>
-                <a href="{{servlet-context}}/register">Register</a>
+                <a href="/register">Register</a>
             </li>
         </ul>
     </div>

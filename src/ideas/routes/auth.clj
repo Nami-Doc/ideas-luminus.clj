@@ -5,7 +5,8 @@
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
-            [ideas.models.db :as db]))
+            [ideas.models.db :as db]
+            [prone.debug :refer [debug]]))
 
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
@@ -20,11 +21,10 @@
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :id :pass :pass1)))
 
-(defn register [& [id]]
+(defn register []
   (layout/render
     "auth/registration.html"
-    {:id id
-     :id-error (vali/on-error :id first)
+    {:username-error (vali/on-error :username first)
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
@@ -32,28 +32,34 @@
   (if (valid? username email pass pass1)
     (try
       (do
-        (let [id (db/create-user {:username username :email email :pass (crypt/encrypt pass)})]
-          (session/put! :user-id id)
-          (resp/redirect "/")
-          (register id)))
+        (let [user (db/create-user {:username username :email email :pass (crypt/encrypt pass)})]
+          (session/put! :user-id (:id user))
+          (resp/redirect "/profile")))
       (catch Exception ex
         (vali/rule false [:id (.getMessage ex)])
         (register)))))
 
 (defn profile []
-  (layout/render
-    "auth/profile.html"
-    {:user (db/find-user (session/get :user-id))}))
+  (and-let [user-id (session/get :user-id)
+            user (db/find-user user-id)]
+    (layout/render
+      "auth/profile.html"
+      {:user user})
+    (resp/redirect "/")))
 
 (defn update-profile [{:keys [first-name last-name email]}]
-  (db/update-user (session/get :user-id) first-name last-name email)
-  (profile))
-
-(defn handle-login [id pass]
-  (let [user (db/find-user id)]
-    (if (and user (crypt/compare pass (:pass user)))
-      (session/put! :user-id id))
+  (if (not (nil? (session/get :user-id)))
+    (do ;; if we're logged in, proceed
+      (db/update-user (session/get :user-id) first-name last-name email)
+      (profile))
     (resp/redirect "/")))
+
+(defn handle-login [username pass]
+  (if (nil? (session/get :user-id))
+    (let [user (db/find-user-by-username username)]
+      (when (and user (crypt/compare pass (:pass user)))
+        (session/put! :user-id (:id user))))
+    (resp/redirect "/"))) ;; redirect either way
 
 (defn logout []
   (session/clear!)
