@@ -1,12 +1,13 @@
 (ns ideas.routes.auth
   (:use compojure.core)
-  (:require [ideas.views.layout :as layout]
-            [noir.session :as session]
+  (:require [noir.session :as session]
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
             [ideas.models.db :as db]
-            [prone.debug :refer [debug]]))
+            [prone.debug :refer [debug]]
+            [ideas.views.layout :as layout]
+            [ideas.util :refer [and-let]]))
 
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
@@ -42,6 +43,7 @@
 (defn profile []
   (and-let [user-id (session/get :user-id)
             user (db/find-user user-id)]
+    (debug user)
     (layout/render
       "auth/profile.html"
       {:user user})
