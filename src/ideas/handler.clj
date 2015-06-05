@@ -19,9 +19,9 @@
   (route/not-found "Not Found"))
 
 (defn init
-  "init will be called once when\r
-   app is deployed as a servlet on\r
-   an app server such as Tomcat\r
+  "init will be called once when
+   app is deployed as a servlet on
+   an app server such as Tomcat
    put any initialization code here"
   []
   (timbre/set-config!
@@ -50,6 +50,7 @@
  (app-handler
    [cljs-routes auth-routes home-routes ideas-routes app-routes]
    :middleware
+   ;; TODO add "flashes" middleware
    [middleware/template-error-page middleware/log-request]
    :access-rules
    []

@@ -29,13 +29,13 @@
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
-(defn handle-registration [username email pass pass1]
+(defn handle-registration
+  [username email pass pass1]
   (if (valid? username email pass pass1)
     (try
-      (do
-        (let [user (db/create-user {:username username :email email :pass (crypt/encrypt pass)})]
-          (session/put! :user-id (:id user))
-          (resp/redirect "/profile")))
+      (let [user (db/create-user {:username username :email email :pass (crypt/encrypt pass)})]
+        (session/put! :user-id (:id user))
+        (resp/redirect "/profile"))
       (catch Exception ex
         (vali/rule false [:id (.getMessage ex)])
         (register)))))
@@ -49,7 +49,8 @@
       {:user user})
     (resp/redirect "/")))
 
-(defn update-profile [{:keys [first-name last-name email]}]
+(defn update-profile
+  [{:keys [first-name last-name email]}]
   (if (not (nil? (session/get :user-id)))
     (do ;; if we're logged in, proceed
       (db/update-user (session/get :user-id) first-name last-name email)
@@ -59,9 +60,10 @@
 (defn handle-login [username pass]
   (if (nil? (session/get :user-id))
     (let [user (db/find-user-by-username username)]
-      (when (and user (crypt/compare pass (:pass user)))
-        (session/put! :user-id (:id user))))
-    (resp/redirect "/"))) ;; redirect either way
+      (if (and user (crypt/compare pass (:pass user)))
+        (session/put! :user-id (:id user))
+        (session/flash-put! :last-error "User not found!"))))
+  (resp/redirect "/")) ;; redirect either way
 
 (defn logout []
   (session/clear!)

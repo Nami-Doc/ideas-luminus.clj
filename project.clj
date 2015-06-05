@@ -11,9 +11,9 @@
    [ring-server "0.4.0"] ;; web server
    [ragtime "0.3.8"] ;; migration stuff
    [environ "1.0.0"] ;; manage envs (TODO use it)
-   [markdown-clj "0.9.62"] ;; used for resources/md/
+   [markdown-clj "0.9.62"] ;; used for ./resources/md/
    [com.taoensso/timbre "3.4.0"] ;; logging / profiling
-   [korma "0.4.0"]
+   [korma "0.4.0"] ;; sql
    [com.taoensso/tower "3.0.2"] ;; i18n
    [selmer "0.8.0"] ;; jinja-like templating
    [lib-noir "0.9.5"] ;; ring helpers: sessions, assets, input val., caching, ...

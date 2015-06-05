@@ -11,7 +11,6 @@
                          (str "find-" table-name)
                          (or getter-name (str "find-" table-name "-by-" (str field))))]
                (println getter)
-               ; TODO currently, the getter will have the table name in plural as that's what's given to it... :(
                `(defn ~(symbol getter) [~field]
                       (first (select ~table
                                      (where {~(keyword field) ~field})
