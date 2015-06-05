@@ -24,7 +24,9 @@
           :user-id
           (session/get :user-id)
           :flash-error
-          (session/flash-get :last-error))
+          (session/flash-get :error)
+          :flash-notice
+          (session/flash-get :notice))
         (parser/render-file (str template-path template))
         response)
       "text/html; charset=utf-8")))

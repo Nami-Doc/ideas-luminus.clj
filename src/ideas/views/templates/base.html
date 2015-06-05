@@ -21,7 +21,10 @@
     </div>
     <div class="container">
       {% if flash-error %}
-        <h3 style="color: red">{{ flash-error }}</h3>
+      <h3 style="color: red">{{ flash-error }}</h3>
+      {% endif %}
+      {% if flash-notice %}
+      <h3 style="color: blue">{{ flash-notice }}</h3>
       {% endif %}
       {% block content %}
       {% endblock %}

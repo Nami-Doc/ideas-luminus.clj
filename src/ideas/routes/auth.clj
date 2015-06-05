@@ -12,15 +12,19 @@
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
              [:username "you must specify a username"])
-  (vali/rule (not (db/find-user username))
+  (vali/rule (vali/has-value? email)
+             [:email "you must specify a email"])
+  (vali/rule (not (db/find-user-by-username username))
              [:username "this username is already taken"])
+  (vali/rule (vali/is-email? email)
+             [:email "email field is mandatory"])
   (vali/rule (not (db/find-user-by-email email))
              [:email "this email is already taken"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
-  (not (vali/errors? :id :pass :pass1)))
+  (not (vali/errors? :username :email :pass :pass1)))
 
 (defn register []
   (layout/render
@@ -38,16 +42,18 @@
         (resp/redirect "/profile"))
       (catch Exception ex
         (vali/rule false [:id (.getMessage ex)])
-        (register)))))
+        (register)))
+    (do
+      (session/flash-put! :error "Invalid user")
+      (register))))
 
 (defn profile []
   (and-let [user-id (session/get :user-id)
             user (db/find-user user-id)]
-    (debug user)
+    (debug)
     (layout/render
       "auth/profile.html"
-      {:user user})
-    (resp/redirect "/")))
+      {:user user})))
 
 (defn update-profile
   [{:keys [first-name last-name email]}]
@@ -62,7 +68,8 @@
     (let [user (db/find-user-by-username username)]
       (if (and user (crypt/compare pass (:pass user)))
         (session/put! :user-id (:id user))
-        (session/flash-put! :last-error "User not found!"))))
+        (session/flash-put! :error "User not found!")))
+    (session/flash-put! :notice "Logged in successfully!"))
   (resp/redirect "/")) ;; redirect either way
 
 (defn logout []
