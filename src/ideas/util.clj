@@ -3,12 +3,16 @@
             [markdown.core :as md]))
 
 ;; "ported" from scheme
-(defmacro and-let
-  [bindings & expr]
+(defn- and-let-impl
+  [bindings expr]
   (if (seq bindings)
     `(if-let [~(first bindings) ~(second bindings)]
-       (and-let ~(drop 2 bindings) ~expr))
-    expr))
+       ~(and-let-impl (drop 2 bindings) expr))
+    `(do ~@expr)))
+
+(defmacro and-let
+  [bindings & expr]
+  (and-let-impl bindings expr))
 
 (defn md->html
   "reads a markdown file from public/md and returns an HTML string"

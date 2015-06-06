@@ -7,7 +7,8 @@
             [ideas.models.db :as db]
             [prone.debug :refer [debug]]
             [ideas.views.layout :as layout]
-            [ideas.util :refer [and-let]]))
+            [ideas.util :refer [and-let]]
+            [clojure.walk :refer [macroexpand-all]]))
 
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
@@ -39,6 +40,7 @@
     (try
       (let [user (db/create-user {:username username :email email :pass (crypt/encrypt pass)})]
         (session/put! :user-id (:id user))
+        (session/flash-put! :notice "Welcome on ideas!")
         (resp/redirect "/profile"))
       (catch Exception ex
         (vali/rule false [:id (.getMessage ex)])
@@ -50,10 +52,9 @@
 (defn profile []
   (and-let [user-id (session/get :user-id)
             user (db/find-user user-id)]
-    (debug)
     (layout/render
       "auth/profile.html"
-      {:user user})))
+      {user :user})))
 
 (defn update-profile
   [{:keys [first-name last-name email]}]
