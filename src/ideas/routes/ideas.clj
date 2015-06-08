@@ -13,11 +13,15 @@
   (layout/render
     "ideas/show.html" {:idea (db/get-idea id)}))
 
-(defn add-page [& [name description error]]
-  (layout/render
-    "ideas/add.html" {:name name
-                      :description description
-                      :error error}))
+(defn add-page
+  ([]
+    (add-page "" "" ""))
+  ([name description error]
+    (layout/render
+      "ideas/add.html"
+      {:name name
+       :description description
+       :error error})))
 
 (defn save-page [name description]
   (cond

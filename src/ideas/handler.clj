@@ -50,7 +50,6 @@
  (app-handler
    [cljs-routes auth-routes home-routes ideas-routes app-routes]
    :middleware
-   ;; TODO add "flashes" middleware
    [middleware/template-error-page middleware/log-request]
    :access-rules
    []

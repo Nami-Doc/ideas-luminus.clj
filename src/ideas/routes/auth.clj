@@ -8,7 +8,7 @@
             [prone.debug :refer [debug]]
             [ideas.views.layout :as layout]
             [ideas.util :refer [and-let]]
-            [clojure.walk :refer [macroexpand-all]]))
+            [ideas.routes.helper :refer [filter-req is-auth! is-anon!]]))
 
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
@@ -26,6 +26,24 @@
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :username :email :pass :pass1)))
+
+
+(defn- authenticate ; REFACTOR move this later (to models prolly)
+  "Returns the user associated with
+  the username/password combination"
+  [username password]
+  (if-let [user (db/find-user-by-username username)]
+    (if (crypt/compare password (:pass user))
+      user
+      nil)))
+
+(defn handle-login [username pass]
+  (if-let [user (authenticate username pass)]
+    (do
+      (session/put! :user-id (:id user))
+      (session/flash-put! :error "User not found!")))
+    (session/flash-put! :notice "Logged in successfully!"))
+
 
 (defn register []
   (layout/render
@@ -50,11 +68,10 @@
       (register))))
 
 (defn profile []
-  (and-let [user-id (session/get :user-id)
-            user (db/find-user user-id)]
+  (if-let [user (db/find-user (session/get :user-id))]
     (layout/render
       "auth/profile.html"
-      {user :user})))
+      {:user user})))
 
 (defn update-profile
   [{:keys [first-name last-name email]}]
@@ -64,32 +81,25 @@
       (profile))
     (resp/redirect "/")))
 
-(defn handle-login [username pass]
-  (if (nil? (session/get :user-id))
-    (let [user (db/find-user-by-username username)]
-      (if (and user (crypt/compare pass (:pass user)))
-        (session/put! :user-id (:id user))
-        (session/flash-put! :error "User not found!")))
-    (session/flash-put! :notice "Logged in successfully!"))
-  (resp/redirect "/")) ;; redirect either way
-
 (defn logout []
   (session/clear!)
   (resp/redirect "/"))
 
 (defroutes auth-routes
+  (POST "/login" [username pass]
+    (is-anon! #(handle-login username pass)))
+
   (GET "/register" []
-       (register))
+    (is-anon! register))
 
   (POST "/register" [username email pass pass1]
-        (handle-registration username email pass pass1))
+    (is-anon! #(handle-registration username email pass pass1)))
 
-  (GET "/profile" [] (profile))
+  (GET "/profile" []
+    (is-auth! profile))
 
-  (POST "/update-profile" {params :params} (update-profile params))
-
-  (POST "/login" [username pass]
-        (handle-login username pass))
+  (POST "/update-profile" {params :params}
+    (is-auth! #(update-profile params)))
 
   (GET "/logout" []
-        (logout)))
+    (is-auth! logout)))

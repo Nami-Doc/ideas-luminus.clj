@@ -1,11 +1,8 @@
 {% extends "ideas/views/templates/base.html" %}
 
-{% block menu %}
-{% endblock %}
-
 {% block content %}
   <h2>User details for {{user.username}}</h2>
-  <form action="{{servlet-context}}/update-profile" method="POST">
+<!--  <form action="{{servlet-context}}/update-profile" method="POST">
     <div class="form-group col-lg-3">
       <label for="first-name">first name</label>
       <p>
@@ -15,11 +12,6 @@
       <p>
         <input class="form-control" id="last-name" name="last-name" tabindex="1" type="text" value="{{user.last_name}}" />
       </p>
-      <label for="email">email</label>
-      <p>
-        <input class="form-control" id="email" name="email" tabindex="1" type="text" value="{{user.email}}" />
-      </p>
-      <input class="btn" tabindex="4" type="submit" value="update profile">
     </div>
-  </form>
+  </form>-->
 {% endblock %}
