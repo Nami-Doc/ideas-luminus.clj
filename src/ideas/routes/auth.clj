@@ -41,8 +41,9 @@
   (if-let [user (authenticate username pass)]
     (do
       (session/put! :user-id (:id user))
-      (session/flash-put! :error "User not found!")))
-    (session/flash-put! :notice "Logged in successfully!"))
+      (session/flash-put! :notice "Logged in successfully!"))
+    (session/flash-put! :error "User not found!"))
+  (resp/redirect "/"))
 
 
 (defn register []
