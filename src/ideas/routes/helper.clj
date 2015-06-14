@@ -1,7 +1,6 @@
 (ns ideas.routes.helper
   (:require [noir.response :as resp]
-            [noir.session :as session]
-            [prone.debug :refer [debug]]))
+            [noir.session :as session]))
 
 (def ^:dynamic *filter-req-redirect-path* "/")
 (def ^:dynamic *is-anon!-redirect-path* "/")

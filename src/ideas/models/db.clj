@@ -10,7 +10,6 @@
                 getter (if (= "id" (str field))
                          (str "find-" table-name)
                          (or getter-name (str "find-" table-name "-by-" (str field))))]
-               (println getter)
                `(defn ~(symbol getter) [~field]
                       (first (select ~table
                                      (where {~(keyword field) ~field})
