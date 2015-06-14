@@ -7,11 +7,12 @@
             [taoensso.timbre.appenders.rotor :as rotor]
             [selmer.parser :as parser]
             [environ.core :refer [env]]
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
             [ideas.routes.auth :refer [auth-routes]]
             [ideas.routes.cljs :refer [cljs-routes]]
             [ideas.routes.home :refer [home-routes]]
             [ideas.routes.ideas :refer [ideas-routes]]
-            [ring.util.anti-forgery :refer [anti-forgery-field]]))
+            [ideas.online :refer [update-online-list]]))
 
 (defroutes
   app-routes
@@ -50,7 +51,9 @@
  (app-handler
    [cljs-routes auth-routes home-routes ideas-routes app-routes]
    :middleware
-   [middleware/template-error-page middleware/log-request]
+   [middleware/template-error-page
+    middleware/log-request
+    update-online-list]
    :access-rules
    []
    :formats

@@ -18,6 +18,7 @@
    [selmer "0.8.0"] ;; jinja-like templating
    [lib-noir "0.9.5"] ;; ring helpers: sessions, assets, input val., caching, ...
    [compojure "1.3.2"] ;; routing
+   [clj-time "0.9.0"] ;; like joda-time... but for clojure
    [postgresql/postgresql "9.1-901.jdbc4"]
    [log4j "1.2.17" ;; logging. seems to be outdated (2012)
     :exclusions [javax.mail/mail javax.jms/jms com.sun.jdmk/jmxtools com.sun.jmx/jmxri]]
