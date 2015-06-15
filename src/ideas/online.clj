@@ -22,7 +22,7 @@
 (defn update-online-list
   "middleware to update the online list"
   [handler]
-  (if (session/get :user-id)
+  (if false ; TODO (session/get :user-id)
     (send online update-agent (session/get :user-id) (t/now)))
   ; quietly return handler
   handler)

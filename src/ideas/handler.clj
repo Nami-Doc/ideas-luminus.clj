@@ -1,6 +1,7 @@
 (ns ideas.handler
   (:require [compojure.core :refer [defroutes]]
             [ideas.middleware :as middleware]
+            [ideas.online :refer [update-online-list]]
             [noir.util.middleware :refer [app-handler]]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
@@ -11,8 +12,7 @@
             [ideas.routes.auth :refer [auth-routes]]
             [ideas.routes.cljs :refer [cljs-routes]]
             [ideas.routes.home :refer [home-routes]]
-            [ideas.routes.ideas :refer [ideas-routes]]
-            [ideas.online :refer [update-online-list]]))
+            [ideas.routes.ideas :refer [ideas-routes]]))
 
 (defroutes
   app-routes
@@ -52,7 +52,8 @@
    [cljs-routes auth-routes home-routes ideas-routes app-routes]
    :middleware
    [middleware/template-error-page
-    middleware/log-request]
+    middleware/log-request
+    update-online-list]
    :access-rules
    []
    :formats
