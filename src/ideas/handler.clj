@@ -51,9 +51,9 @@
  (app-handler
    [cljs-routes auth-routes home-routes ideas-routes app-routes]
    :middleware
-   [middleware/template-error-page
-    middleware/log-request
-    update-online-list]
+   [update-online-list
+    middleware/template-error-page
+    middleware/log-request]
    :access-rules
    []
    :formats
