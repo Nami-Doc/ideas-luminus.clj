@@ -3,7 +3,8 @@
   (:require [ideas.views.layout :as layout]
             [noir.session :as session]
             [ideas.util :as util]
-            [ideas.models.db :as db]))
+            [ideas.models.db :as db]
+            [ideas.util :refer [parse-int]]))
 
 (defn list-page []
   (layout/render
@@ -11,7 +12,7 @@
 
 (defn show-page [id]
   (layout/render
-    "ideas/show.html" {:idea (db/get-idea id)}))
+    "ideas/show.html" {:idea (db/get-idea (parse-int id))}))
 
 (defn add-page
   ([]

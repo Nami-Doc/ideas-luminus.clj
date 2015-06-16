@@ -14,6 +14,11 @@
   [bindings & expr]
   (and-let-impl bindings expr))
 
+(defn parse-int [v]
+  (try
+    (Integer/parseInt (re-find #"^\d+" (.toString v)))
+    (catch NumberFormatException e 0)))
+
 (defn md->html
   "reads a markdown file from public/md and returns an HTML string"
   [filename]
