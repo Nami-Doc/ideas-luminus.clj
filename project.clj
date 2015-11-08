@@ -13,8 +13,7 @@
    [environ "1.0.1"] ;; manage envs (TODO use it)
    [markdown-clj "0.9.62"] ;; used for ./resources/md/
                            ;; NOTE: new version (.78) is broken
-   [com.taoensso/timbre "3.4.0"] ;; logging / profiling
-                                 ;; NOTE: version 4.x is broken atm
+   [com.taoensso/timbre "4.1.4"] ;; logging / profiling
    [korma "0.4.2"] ;; sql
    [com.taoensso/tower "3.0.2"] ;; i18n
    [selmer "0.9.4"] ;; jinja-like templating

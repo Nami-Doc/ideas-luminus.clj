@@ -5,14 +5,15 @@
             [noir.util.middleware :refer [app-handler]]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
-            [taoensso.timbre.appenders.rotor :as rotor]
+            [taoensso.timbre.appenders.3rd-party.rotor :as rotor]
             [selmer.parser :as parser]
             [environ.core :refer [env]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]
             [ideas.routes.auth :refer [auth-routes]]
             [ideas.routes.cljs :refer [cljs-routes]]
             [ideas.routes.home :refer [home-routes]]
-            [ideas.routes.ideas :refer [ideas-routes]]))
+            [ideas.routes.ideas :refer [ideas-routes]]
+            [ideas.routes.implementations :refer [implementations-routes]]))
 
 (defroutes
   app-routes
@@ -26,15 +27,14 @@
    put any initialization code here"
   []
   (timbre/set-config!
-    [:appenders :rotor]
-    {:min-level :info,
-     :enabled? true,
-     :async? false,
-     :max-message-per-msecs nil,
-     :fn rotor/appender-fn})
-  (timbre/set-config!
-    [:shared-appender-config :rotor]
-    {:path "ideas.log", :max-size (* 512 1024), :backlog 10})
+    {:appenders {:rotor {:min-level :info
+                         :enabled? true
+                         :async? false
+                         :max-message-per-msecs nil
+                         :fn rotor/rotor-appender}}
+     :shared-appender-config {:rotor {:path "ideas.log"
+                                      :max-size (* 512 1024)
+                                      :backlog 10}}})
 
   (parser/add-tag! :csrf-token (fn [_ _] (anti-forgery-field)))
   (if (env :dev) (parser/cache-off!))
@@ -48,16 +48,13 @@
   (timbre/info "ideas is shutting down..."))
 
 (def app
- (app-handler
-   [cljs-routes app-routes
-    auth-routes home-routes
-    ideas-routes implementations-routes]
-   :middleware
-   [update-online-list
-    middleware/template-error-page
-    middleware/log-request]
-   :access-rules
-   []
-   :formats
-   [:json-kw :edn]))
+  (app-handler
+    [auth-routes home-routes
+     ideas-routes implementations-routes
+     cljs-routes app-routes]
+    :middleware [update-online-list
+                 middleware/template-error-page
+                 middleware/log-request]
+    :access-rules []
+    :formats [:json-kw :edn]))
 
