@@ -5,4 +5,18 @@
 
 <p>{{idea.description}}</p>
 
+<fieldset>
+    <legend>Implementations</legend>
+    {% if user-id %}
+        <br/>
+        <a href="/ideas/{{idea.id}}/implementations/add">Submit your implementation</a>
+    {% endif %}
+
+    <ul>
+        {% for implementation in idea.implementations %}
+        <li>{{implementation.repo_url}}</li>
+        {% endfor %}
+    </ul>
+</fieldset>
+
 {% endblock %}

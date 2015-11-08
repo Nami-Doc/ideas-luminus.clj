@@ -49,7 +49,9 @@
 
 (def app
  (app-handler
-   [cljs-routes auth-routes home-routes ideas-routes app-routes]
+   [cljs-routes app-routes
+    auth-routes home-routes
+    ideas-routes implementations-routes]
    :middleware
    [update-online-list
     middleware/template-error-page
