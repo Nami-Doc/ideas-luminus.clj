@@ -1,0 +1,10 @@
+<form action="/ideas/{{idea.id}}/implementations" method="post">
+    {% csrf-token %}
+	<label for="name">Idea Name</label><br />
+	<p><input name="name" id="name" /></p>
+
+    <label for="description">Description</label><br/>
+    <p><textarea name="description" id="description"></textarea></p>
+
+    <input type="submit" />
+</form>
