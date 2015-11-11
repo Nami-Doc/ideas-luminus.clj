@@ -3,8 +3,8 @@
             [clj-time.core :as t]))
 
 ;; just inspect the online list with @
-;; TODO maybe expose a function for that
-;;      that'll clean up the list?
+;; TODO maybe expose a function for that,
+;;      that'll also clean up the list?
 (def online (agent {}))
 (def ^:dynamic *online-time* (t/minutes 5))
 

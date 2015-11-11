@@ -5,7 +5,6 @@
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
             [ideas.models.db :as db]
-            [prone.debug :refer [debug]]
             [ideas.views.layout :as layout]
             [ideas.util :refer [and-let]]
             [ideas.routes.helper :refer [filter-req is-auth! is-anon!]]))
@@ -28,7 +27,8 @@
   (not (vali/errors? :username :email :pass :pass1)))
 
 
-(defn- authenticate ; REFACTOR move this later (to models prolly)
+(defn- authenticate
+  ; REFACTOR move this later (to models prolly)
   "Returns the user associated with
   the username/password combination"
   [username password]

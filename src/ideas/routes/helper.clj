@@ -3,8 +3,6 @@
             [noir.session :as session]))
 
 (def ^:dynamic *filter-req-redirect-path* "/")
-(def ^:dynamic *is-anon!-redirect-path* "/")
-(def ^:dynamic *is-auth!-redirect-path* "/login")
 
 (defn filter-req
   ([cond fn]
@@ -15,7 +13,11 @@
       (fn)
       (resp/redirect redirect-path))))
 
-;; TODO move this outside from here.
+;; TODO move this outside from here. this file should
+;;      only be related to routing
+(def ^:dynamic *is-anon!-redirect-path* "/")
+(def ^:dynamic *is-auth!-redirect-path* "/login")
+
 ; predicates
 (defn is-anon? []
   (nil? (session/get :user-id)))
