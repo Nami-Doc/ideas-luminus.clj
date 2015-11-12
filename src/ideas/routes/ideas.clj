@@ -19,23 +19,9 @@
   ;;      (will require case-insensitive comparison, probably)
   (not (vali/errors? :name :description)))
 
-(defn list-page []
-  (layout/render
-    "ideas/list.html" {:ideas (db/list-ideas)}))
-
-(defn show-page [id]
-  (layout/render
-    "ideas/show.html" {:idea (db/get-idea (parse-int id))}))
-
-(defn add-page
-  ([]
-    (add-page "" "" ""))
-  ([name description error]
-    (layout/render
-      "ideas/add.html"
-      {:name name
-       :description description
-       :error error})))
+(crud-for-list "idea")
+(crud-for-show "idea")
+(crud-for-add "idea" [name description error])
 
 (defn save-page [name description]
   (if (valid? name description)
