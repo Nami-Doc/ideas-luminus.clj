@@ -39,4 +39,4 @@
     `(letfn [(thisfn#
                ([] (thisfn# ~@default-fields))
                (~fields (layout/render ~add-page ~field-values)))]
-       thisfn)))
+       thisfn#)))
