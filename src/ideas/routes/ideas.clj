@@ -5,8 +5,8 @@
             [noir.validation :as vali]
             [ideas.util :as util]
             [ideas.models.db :as db]
-            [ideas.util :refer [parse-int]]
-            [ideas.routes.helper :refer [filter-req is-auth! is-anon!]]))
+            [ideas.routes.helper.request :refer [filter-req is-auth! is-anon!]]
+            [ideas.routes.helper.crud :refer [crud-for-list crud-for-show crud-for-add]]))
 
 (defn valid? [name description]
   (vali/rule (vali/has-value? name)
@@ -19,9 +19,9 @@
   ;;      (will require case-insensitive comparison, probably)
   (not (vali/errors? :name :description)))
 
-(crud-for-list "idea")
-(crud-for-show "idea")
-(crud-for-add "idea" [name description error])
+(def list-page (crud-for-list "idea"))
+(def show-page (crud-for-show "idea"))
+(def add-page (crud-for-add "idea" [name description error]))
 
 (defn save-page [name description]
   (if (valid? name description)

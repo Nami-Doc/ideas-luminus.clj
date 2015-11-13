@@ -6,8 +6,7 @@
             [noir.util.crypt :as crypt]
             [ideas.models.db :as db]
             [ideas.views.layout :as layout]
-            [ideas.util :refer [and-let]]
-            [ideas.routes.helper :refer [filter-req is-auth! is-anon!]]))
+            [ideas.routes.helper.request :refer [filter-req is-auth! is-anon!]]))
 
 (defn valid? [username email pass pass1]
   (vali/rule (vali/has-value? username)
