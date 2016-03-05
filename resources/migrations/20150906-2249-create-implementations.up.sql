@@ -4,7 +4,7 @@ CREATE TABLE implementations (
   user_id integer NOT NULL REFERENCES users,
   repo_url varchar(255),
   demo_url varchar(255),
-  coment text
+  comment text
 );
 --;;
 CREATE TABLE screenshots (
