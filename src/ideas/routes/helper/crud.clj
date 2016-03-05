@@ -26,16 +26,16 @@
          {~(keyword model) (~db-show-symbol (parse-int id#))
           }))))
 
+(def fields-to-hash
+  (comp (partial apply hash-map)
+        flatten
+        (partial map #(vector (keyword %1) %1))))
+
 (defmacro crud-for-add [model fields]
-  (println fields)
   (let [model-plural (inflections/plural model)
         add-page (format *add-page* model-plural)
         default-fields (repeat (count fields) "")
-        field-values (->> fields ; build a tuple2 vector
-                       (map #(vector (keyword %1) %1))
-                       flatten   ; ... then flat/hash map it
-                       (apply hash-map))]
-    (println field-values)
+        field-values (fields-to-hash fields)]
     `(letfn [(thisfn#
                ([] (thisfn# ~@default-fields))
                (~fields (layout/render ~add-page ~field-values)))]

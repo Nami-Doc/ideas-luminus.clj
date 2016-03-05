@@ -5,7 +5,7 @@
             [noir.validation :as vali]
             [ideas.util :as util]
             [ideas.models.db :as db]
-            [ideas.routes.helper.request :refer [filter-req is-auth! is-anon!]]
+            [ideas.routes.helper.request :refer [is-auth!]]
             [ideas.routes.helper.crud :refer [crud-for-list crud-for-show crud-for-add]]))
 
 (defn valid? [name description]

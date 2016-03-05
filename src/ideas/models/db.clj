@@ -12,8 +12,8 @@
                  (or getter-name (str "find-" table-name "-by-" (str field))))]
     `(defn ~(symbol getter) [~field]
        (first (select ~table
-                (where {~(keyword field) ~field})
-                (limit 1))))))
+                      (where {~(keyword field) ~field})
+                      (limit 1))))))
 
 
 ;; ok, now to the actual DB things...
@@ -25,14 +25,14 @@
 
 (defn create-user [user]
   (insert users
-    (values user)))
+          (values user)))
 
 (defn update-user [id first-name last-name email]
   (update users
-    (set-fields {:first_name first-name
-                 :last_name last-name
-                 :email email})
-    (where {:id id})))
+          (set-fields {:first_name first-name
+                       :last_name last-name
+                       :email email})
+          (where {:id id})))
 
 (generate-find users id)
 (generate-find users username)
