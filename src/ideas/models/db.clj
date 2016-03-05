@@ -51,10 +51,14 @@
 
 (defn get-idea [id]
   (first (select ideas
-           (with implementations)
-           (where {:id id})
-           (limit 1))))
+                 (with implementations)
+                 (where {:id id})
+                 (limit 1))))
 
 (defn create-idea [idea]
   (insert ideas
-    (values idea)))
+          (values idea)))
+
+(defn create-implementation [impl]
+  (insert implementations
+          (values impl)))

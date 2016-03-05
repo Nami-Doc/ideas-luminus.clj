@@ -4,10 +4,11 @@
             [noir.validation :as vali]
             [ideas.views.layout :as layout]
             [ideas.models.db :as db]
-            [ideas.util :refer [parse-int]]))
+            [ideas.util :refer [parse-int]]
+            [ideas.routes.helper.request :refer [is-auth!]]))
 
 (defn- valid? [my fields]
-  )
+  true)
 
 (defn add-page [idea]
   (layout/render
@@ -17,7 +18,7 @@
 (defn save-page [idea fields]
   (if (valid? fields)
     (do
-      (save fields)
+      (db/create-implementation fields)
       (resp/redirect (str "ideas/" (:id idea))))
     (do
       )))
