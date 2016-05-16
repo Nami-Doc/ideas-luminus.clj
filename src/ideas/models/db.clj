@@ -42,6 +42,11 @@
 (defentity implementations
   (belongs-to ideas))
 
+(defn list-implementations []
+  (select implementations))
+
+(generate-find implementations id)
+
 ;; ideas
 (defentity ideas
   (has-many implementations {:fk :idea_id}))

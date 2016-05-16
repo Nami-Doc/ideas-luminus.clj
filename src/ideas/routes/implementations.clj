@@ -1,35 +1,36 @@
 (ns ideas.routes.implementations
   (:use compojure.core)
-  (:require [noir.response :as resp]
-            [noir.validation :as vali]
-            [ideas.views.layout :as layout]
-            [ideas.models.db :as db]
+  (:require [ideas.models.db :as db]
+            [ideas.routes.helper.crud :refer (crud-for-list crud-for-add)]
+            [ideas.routes.helper.request :refer [is-auth!]]
             [ideas.util :refer [parse-int]]
-            [ideas.routes.helper.request :refer [is-auth!]]))
+            [ideas.views.layout :as layout]
+            [noir.response :as resp]
+            [noir.session :as session]
+            [noir.validation :as vali]))
 
-(defn- valid? [my fields]
+(def list-page (crud-for-list "implementation"))
+(def add-page (crud-for-add "implementation" [name url]))
+
+(defn- valid? [name url]
   true)
 
-(defn add-page [idea]
-  (layout/render
-    "implementations/add.html"
-    {:idea idea}))
-
-(defn save-page [idea fields]
-  (if (valid? fields)
+(defn save-page [name url]
+  (if (valid? name url)
     (do
-      (db/create-implementation fields)
-      (resp/redirect (str "ideas/" (:id idea))))
+      (db/create-implementation [name url])
+      (list-page))
     (do
-      )))
+      (session/flash-put! :error "Invalid implementation")
+      (add-page name url "Invalid implementation"))))
 
 (defn crud-routes [idea-id]
   (if-let [idea (db/get-idea (parse-int idea-id))]
     (routes
-      (GET "/add" []
-        (is-auth! #(add-page idea)))
-      (POST "/" [my fields]
-        (is-auth! #(save-page my fields))))))
+     (GET "/add" []
+          (is-auth! #(add-page idea)))
+     (POST "/" [name url]
+           (is-auth! #(save-page name url))))))
 
 (defroutes implementations-routes
   (context "/ideas/:idea-id/implementations" [idea-id]

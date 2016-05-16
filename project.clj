@@ -7,7 +7,7 @@
 
   :dependencies
   [
-   [org.clojure/clojure "1.6.0"]
+   [org.clojure/clojure "1.8.0"]
    [ring-server "0.4.0"] ;; web server
    [ragtime "0.5.2"] ;; migration stuff
    [environ "1.0.1"] ;; manage envs (TODO use it)
