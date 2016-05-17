@@ -10,15 +10,18 @@
             [noir.validation :as vali]))
 
 (def list-page (crud-for-list "implementation"))
-(def add-page (crud-for-add "implementation" [name url]))
+(defn add-page
+  ([idea] (add-page idea "" ""))
+  ([idea name url] (layout/render "implementations/add.html"
+                                  {:idea idea :name name :url url})))
 
 (defn- valid? [name url]
   true)
 
-(defn save-page [name url]
+(defn save-page [idea name url]
   (if (valid? name url)
     (do
-      (db/create-implementation [name url])
+      (db/create-implementation {:name name :url url :idea_id (:id idea)})
       (list-page))
     (do
       (session/flash-put! :error "Invalid implementation")
@@ -30,7 +33,8 @@
      (GET "/add" []
           (is-auth! #(add-page idea)))
      (POST "/" [name url]
-           (is-auth! #(save-page name url))))))
+           (is-auth! #(save-page idea name url)))
+     )))
 
 (defroutes implementations-routes
   (context "/ideas/:idea-id/implementations" [idea-id]
