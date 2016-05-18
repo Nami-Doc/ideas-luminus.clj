@@ -1,13 +1,12 @@
 (ns ideas.routes.implementations
-  (:use compojure.core)
-  (:require [ideas.models.db :as db]
-            [ideas.routes.helper.crud :refer (crud-for-list crud-for-add)]
-            [ideas.routes.helper.request :refer [is-auth!]]
+  (:require [compojure.core :refer :all]
+            [ideas.models.db :as db]
+            [ideas.routes.helper
+             [crud :refer [crud-for-list]]
+             [request :refer [is-auth!]]]
             [ideas.util :refer [parse-int]]
             [ideas.views.layout :as layout]
-            [noir.response :as resp]
-            [noir.session :as session]
-            [noir.validation :as vali]))
+            [noir.session :as session]))
 
 (def list-page (crud-for-list "implementation"))
 (defn add-page
