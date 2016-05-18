@@ -11,44 +11,49 @@
 
 (def list-page (crud-for-list "implementation"))
 (defn- params
-  [idea repo demo comment]
-  {:idea idea :repo repo :demo demo :comment comment})
+  [idea repo_url demo_url comment]
+  {:idea idea :repo_url repo_url :demo_url demo_url :comment comment})
 
 (defn add-page
-  ([idea] (add-page idea "" ""))
-  ([idea repo demo comment]
+  ([idea] (add-page idea "" "" ""))
+  ([idea repo_url demo_url comment]
    (layout/render "implementations/add.html"
-                  (params idea repo demo comment))))
+                  (into {:errors (vali/get-errors)}
+                        (params idea repo_url demo_url comment)))))
 
-(defn- valid? [repo demo comment]
-  ;; TODO assert that the repo is an URL
-  (vali/rule (vali/has-value? repo)
-             [:repo"you must specify a repository url"])
-  ; XXX is a demo required?
-  ;; (vali/rule (vali/has-value? demo)
-  ;;            [:description "you must specify a demo url"])
+(defn- valid? [repo_url demo_url comment]
+  ;; TODO assert that the repo_url is an URL (and using bitbucket / github / ...)
+  (println "repo")
+  (println repo_url)
+  (vali/rule (vali/has-value? repo_url)
+             [:repo_url "you must specify a repository url"])
+  ; XXX is a demo_url required?
+  ;; (vali/rule (vali/has-value? demo_url)
+  ;;            [:description "you must specify a demo_url url"])
   ; XXX is a comment required?
   ;; (vali/rule (vali/min-length? description 5)
   ;;            [:description "your description must be at least 5 characters"])
-  (not (vali/errors? repo demo comment)))
+  (not (vali/errors? :repo_url ;:demo_url :comment
+                     )))
 
-(defn save-page [idea repo demo comment]
-  (if (valid? repo demo comment)
-    (do
-      (session/flash-put! :error "Invalid implementation")
-      (add-page name url "Invalid implementation"))
+(defn save-page [idea repo_url demo_url comment]
+  (if (valid? repo_url demo_url comment)
     (do
       ;; TODO can use `params` here? or is `idea` a no-go for the ORM?
-      (db/create-implementation {:name name :url url :idea_id (:id idea)})
-      (list-page))))
+      ; (i.e.: do I need to pass the object explicitly? can I just pass the id? etc
+      (db/create-implementation {:repo_url repo_url :demo_url demo_url :idea_id (:id idea)})
+      (list-page idea))
+    (do
+      (session/flash-put! :error "Invalid implementation")
+      (add-page idea repo_url demo_url comment))))
 
 (defn crud-routes [idea-id]
   (if-let [idea (db/get-idea (parse-int idea-id))]
     (routes
      (GET "/add" []
           (is-auth! #(add-page idea)))
-     (POST "/" [name url]
-           (is-auth! #(save-page idea name url)))
+     (POST "/" [repo_url demo_url comment]
+           (is-auth! #(save-page idea repo_url demo_url comment)))
      )))
 
 (defroutes implementations-routes
