@@ -1,12 +1,13 @@
 (ns ideas.routes.ideas
-  (:use compojure.core)
-  (:require [ideas.views.layout :as layout]
-            [noir.session :as session]
-            [noir.validation :as vali]
-            [ideas.util :as util]
+  (:require [compojure.core :refer :all]
             [ideas.models.db :as db]
-            [ideas.routes.helper.request :refer [is-auth!]]
-            [ideas.routes.helper.crud :refer [crud-for-list crud-for-show crud-for-add]]))
+            [ideas.routes.helper
+             [crud :refer [crud-for-add crud-for-list crud-for-show]]
+             [request :refer [is-auth!]]]
+            [ideas.views.layout :as layout]
+            [noir
+             [session :as session]
+             [validation :as vali]]))
 
 (defn valid? [name description]
   (vali/rule (vali/has-value? name)
