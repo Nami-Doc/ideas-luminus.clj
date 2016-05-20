@@ -16,7 +16,7 @@
 ;; TODO move this outside from here. this file should
 ;;      only be related to routing
 (def ^:dynamic *is-anon!-redirect-path* "/")
-(def ^:dynamic *is-auth!-redirect-path* "/login")
+(def ^:dynamic *is-auth!-redirect-path* "/") ; XXX we have no /login path
 
 ; predicates
 (defn is-anon? []
