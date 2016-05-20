@@ -4,12 +4,13 @@
             [ideas.routes.helper
              [crud :refer [crud-for-list]]
              [request :refer [is-auth!]]]
+            [ideas.routes.ideas :as ideas]
             [ideas.util :refer [parse-int]]
             [ideas.views.layout :as layout]
-            [noir.session :as session]
-            [noir.validation :as vali]))
+            [noir
+             [session :as session]
+             [validation :as vali]]))
 
-(def list-page (crud-for-list "implementation"))
 (defn- params
   [idea repo_url demo_url comment]
   {:idea idea :repo_url repo_url :demo_url demo_url :comment comment})
@@ -41,8 +42,9 @@
     (do
       ;; TODO can use `params` here? or is `idea` a no-go for the ORM?
       ; (i.e.: do I need to pass the object explicitly? can I just pass the id? etc
-      (db/create-implementation {:repo_url repo_url :demo_url demo_url :idea_id (:id idea)})
-      (list-page idea))
+      (db/create-implementation {:repo_url repo_url :demo_url demo_url
+                                 :user_id (session/get :user-id) :idea_id (:id idea)})
+      (ideas/show-page (:id idea)))
     (do
       (session/flash-put! :error "Invalid implementation")
       (add-page idea repo_url demo_url comment))))
