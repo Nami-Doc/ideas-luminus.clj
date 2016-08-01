@@ -14,7 +14,9 @@
 
     <ul>
         {% for implementation in idea.implementations %}
-        <li>{{implementation.repo_url}}</li>
+            <li>
+                <a href="/ideas/{{idea.id}}/implementations/{{implementation.id}}">{{implementation.repo_url}}</a>
+            </li>
         {% endfor %}
     </ul>
 </fieldset>
