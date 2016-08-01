@@ -47,9 +47,16 @@
       (session/flash-put! :error "Invalid implementation")
       (add-page idea repo_url demo_url comment))))
 
+(defn- show-page [idea id]
+  (if-let [implementation (db/find-implementation (parse-int id))]
+    (layout/render "implementations/show.html"
+                  {:idea idea :implementation implementation})))
+
 (defn crud-routes [idea-id]
-  (if-let [idea (db/get-idea (parse-int idea-id))]
+  (if-let [idea (db/find-idea (parse-int idea-id))]
     (routes
+     (GET "/:id" [id]
+          (show-page idea id))
      (GET "/add" []
           (is-auth! #(add-page idea)))
      (POST "/" [repo_url demo_url comment]

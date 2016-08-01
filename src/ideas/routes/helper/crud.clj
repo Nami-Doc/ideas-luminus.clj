@@ -4,7 +4,7 @@
 
 (def ^:dynamic *db-list-fn* "db/list-%s")
 (def ^:dynamic *list-page* "%s/list.html")
-(def ^:dynamic *db-get-fn* "db/get-%s")
+(def ^:dynamic *db-getter-fn* "db/find-%s")
 (def ^:dynamic *show-page* "%s/show.html")
 (def ^:dynamic *add-page* "%s/add.html")
 
@@ -19,7 +19,7 @@
 
 (defmacro crud-for-show [model]
   (let [model-plural (inflections/plural model)
-        db-show-symbol (symbol (format *db-get-fn* model))
+        db-show-symbol (symbol (format *db-getter-fn* model))
         show-page (format *show-page* model-plural)]
     `(fn [id#]
        (layout/render ~show-page

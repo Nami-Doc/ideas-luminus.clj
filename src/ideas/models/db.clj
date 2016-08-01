@@ -54,7 +54,7 @@
 (defn list-ideas []
   (select ideas))
 
-(defn get-idea [id]
+(defn find-idea [id]
   (first (select ideas
                  (with implementations)
                  (where {:id id})
