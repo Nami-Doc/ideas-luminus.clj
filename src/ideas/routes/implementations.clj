@@ -24,8 +24,6 @@
 
 (defn- valid? [repo_url demo_url comment]
   ;; TODO assert that the repo_url is an URL (and using bitbucket / github / ...)
-  (println "repo")
-  (println repo_url)
   (vali/rule (vali/has-value? repo_url)
              [:repo_url "you must specify a repository url"])
   ; XXX is a demo_url required?
