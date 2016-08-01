@@ -5,6 +5,10 @@
 
 <p>{{idea.description}}</p>
 
-<h3>Implementation {{implementation.id}}</h3>
+<h3>Implementation by <a href="/users/{{implementation.user_id}}">{{implementation.username}}</a></h3>
+
+<b>Repository URL:</b> {{implementation.repo_url}}<br />
+
+<b>Demo URL:</b> {{implementation.demo_url}}
 
 {% endblock %}

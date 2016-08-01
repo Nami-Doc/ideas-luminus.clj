@@ -41,7 +41,7 @@
 ;; implementations
 (defentity implementations
   (belongs-to ideas)
-  (belongs-to user))
+  (belongs-to users {:fk :user_id}))
 
 (defn list-implementations []
   (select implementations))
@@ -50,7 +50,7 @@
 (defn find-implementation [id]
   (first (select implementations
                  ;(with idea)
-                 (with user)
+                 (with users)
                  (where {:id id}))))
 
 (defn create-implementation [impl]
