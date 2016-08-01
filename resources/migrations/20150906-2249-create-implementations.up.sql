@@ -18,6 +18,6 @@ CREATE TABLE comments (
   parent_id integer NOT NULL
 );
 --;;
-COMMENT ON COLUMN comments.parent_type IS 'Name of the table this comment comments';
+COMMENT ON COLUMN comments.parent_type IS 'Name of the table this comment belongs to';
 --;;
 COMMENT ON COLUMN comments.parent_id IS 'ID of the referenced element, from the table ${parent_type}';
