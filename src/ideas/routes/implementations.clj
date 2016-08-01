@@ -50,7 +50,7 @@
 (defn- show-page [idea id]
   (if-let [implementation (db/find-implementation (parse-int id))]
     (layout/render "implementations/show.html"
-                  {:idea idea :implementation implementation})))
+                   {:idea idea :implementation implementation})))
 
 (defn crud-routes [idea-id]
   (if-let [idea (db/find-idea (parse-int idea-id))]
