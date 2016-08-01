@@ -34,7 +34,8 @@
       (add-page name description "Invalid idea"))))
 
 (defroutes crud-routes
-  ;; @TODO list-page should probably have a :category-id parameter
+  ;; TODO list-page should probably have a :category-id parameter
+  ;; UPDATE: probably tags instead?
   (GET "/" [] (list-page))
   (GET "/add" [] (is-auth! add-page))
   (GET "/:id" [id] (show-page id))
