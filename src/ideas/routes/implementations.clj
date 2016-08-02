@@ -61,8 +61,9 @@
      (GET "/add" []
           (is-auth! #(add-page idea)))
      (POST "/" [repo_url demo_url comment]
-           (is-auth! #(save-page idea repo_url demo_url comment)))
-     )))
+           (is-auth! #(save-page idea repo_url demo_url comment))))
+    (routes) ;; no idea, no routes
+    ))
 
 (defroutes implementations-routes
   (context "/ideas/:idea-id/implementations" [idea-id]
