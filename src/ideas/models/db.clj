@@ -38,16 +38,14 @@
 
 ;; implementations
 (defentity implementations
-  (belongs-to ideas)
+  (belongs-to ideas {:fk :idea_id})
   (belongs-to users {:fk :user_id}))
 
 (defn list-implementations []
   (select implementations))
 
-;(generate-find implementations id)
 (defn find-implementation [id]
   (first (select implementations
-                 ;(with idea)
                  (with users)
                  (where {:id id}))))
 
