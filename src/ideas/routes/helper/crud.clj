@@ -22,9 +22,9 @@
         db-show-symbol (symbol (format *db-getter-fn* model))
         show-page (format *show-page* model-plural)]
     `(fn [id#]
-       (layout/render ~show-page
-         {~(keyword model) (~db-show-symbol (parse-int id#))
-          }))))
+       (if-let [record# (~db-show-symbol (parse-int id#))]
+         (layout/render ~show-page
+                        {~(keyword model) record#})))))
 
 (def fields-to-hash
   (comp (partial apply hash-map)
