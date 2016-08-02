@@ -4,7 +4,6 @@
   (:require [ideas.models.schema :as schema]
             [inflections.core :as inflections]))
 
-;; so meta
 (defmacro generate-find [table field & [getter-name]]
   (let [table-name (inflections/singular (str table))
         getter (if (= "id" (str field))
@@ -16,7 +15,6 @@
                       (limit 1))))))
 
 
-;; ok, now to the actual DB things...
 (defdb db schema/db-spec)
 (declare users implementations ideas)
 

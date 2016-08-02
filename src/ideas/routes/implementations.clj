@@ -39,11 +39,12 @@
   (if (valid? repo_url demo_url comment)
     (do
       ;; TODO can use `params` here? or is `idea` a no-go for the ORM?
-      ; (i.e.: do I need to pass the object explicitly? can I just pass the id? etc
+      ; (i.e.: do I need to pass the object explicitly {:idea idea}?
+      ; can I just pass the id? etc
       (db/create-implementation {:repo_url repo_url :demo_url demo_url
                                  :user_id (session/get :user-id) :idea_id (:id idea)})
       (ideas/show-page (:id idea)))
-    (do
+    (do ; invalid data, just show the add page again
       (session/flash-put! :error "Invalid implementation")
       (add-page idea repo_url demo_url comment))))
 
