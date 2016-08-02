@@ -13,7 +13,8 @@
             [ideas.routes.cljs :refer [cljs-routes]]
             [ideas.routes.home :refer [home-routes]]
             [ideas.routes.ideas :refer [ideas-routes]]
-            [ideas.routes.implementations :refer [implementations-routes]]))
+            [ideas.routes.implementations :refer [implementations-routes]]
+            [ideas.routes.users :refer [users-routes]]))
 
 (defroutes
   app-routes
@@ -49,12 +50,11 @@
 
 (def app
   (app-handler
-    [auth-routes home-routes
-     ideas-routes implementations-routes
+    [home-routes auth-routes
+     ideas-routes implementations-routes users-routes
      cljs-routes app-routes]
     :middleware [update-online-list
                  middleware/template-error-page
                  middleware/log-request]
     :access-rules []
     :formats [:json-kw :edn]))
-

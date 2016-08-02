@@ -57,6 +57,11 @@
   (insert implementations
           (values impl)))
 
+(defn find-implementations-by-user [user]
+  (select implementations
+          (with ideas)
+          (where (= :user_id (:id user)))))
+
 ;; ideas
 (defentity ideas
   (has-many implementations {:fk :idea_id}))
