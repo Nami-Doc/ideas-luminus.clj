@@ -8,7 +8,6 @@
 (defn- show-page [id]
   (if-let [user (db/find-user (parse-int id))]
     (let [implementations (db/find-implementations-by-user user)]
-      (println implementations)
       (layout/render "users/show.html"
                      {:user user
                       :implementations implementations}))))
