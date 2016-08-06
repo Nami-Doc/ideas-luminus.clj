@@ -67,7 +67,8 @@
 
 (defn find-idea [id]
   (first (select ideas
-                 (with implementations)
+                 (with implementations
+                       (with users))
                  (where {:id id})
                  (limit 1))))
 
